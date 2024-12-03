@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="../static/css/transfer_money.css" />
+
+    <title>Chuyển tiền</title>
+  </head>
+  <body>
+    <div
+      style="display: {% if not account.PinCode %}flex{% else %}none{% endif %};"
+      class="confirm-choose-modal"
+    >
+      <div class="confirm-modal">
+        <div class="modal-header">
+          <div class="modal-title">
+            Vui lòng thiết lập mã pin cho tài khoản của bạn!
+          </div>
+        </div>
+        <div class="modal-body">
+          <a href="/account/choose-pin-code" class="choose-now">Thiết lập</a>
+        </div>
+      </div>
+    </div>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="#">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Chuyển tiền</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Chuyển tiền</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <div class="my-info">
+              <div class="my-info-title">Thông tin chuyển tiền</div>
+              <div class="detail-wrapper">
+                <div class="detail">
+                  <div class="detail-title">Thông tin chuyển tiền</div>
+                  <div class="method-wrapper">
+                    <div class="method-text">Hình thức chuyển</div>
+                    <div class="method-detail">
+                      Chuyển tiền qua số tài khoản
+                    </div>
+                  </div>
+                </div>
+                <div class="detail">
+                  <div class="detail-title">Thông tin của bạn</div>
+                  <div class="method-wrapper">
+                    <div class="method-text">Tài khoản nguồn</div>
+                    <div class="method-detail my-account-info">
+                      <div class="main-account">
+                        {{account.accountNumber}}/{{customer.FirstName + " " +
+                        customer.LastName}}
+                      </div>
+                      <div class="amount">
+                        <strong
+                          >{{'{:,.0f}'.format(account.Balance)}} VND</strong
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a
+                  style="display: block"
+                  href="/account/transfer-money/confirm-receiver-info"
+                  class="my-info-confirm"
+                  >Tiếp tục</a
+                >
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="confirm-modal-wrapper">
+          <div class="confirm-modal">
+            <div class="modal-header">
+              <div class="modal-title">Nhập mã xác thực</div>
+              <div class="modal-close-btn"><i class="bx bx-x"></i></div>
+            </div>
+            <div class="modal-body">
+              <div class="method-detail confirm-code-input"><input /></div>
+              <div class="my-info-confirm confirm-code-btn">Xác nhận</div>
+            </div>
+          </div>
+        </div>
+        <div class="transfer-success-modal-wrapper">
+          <div class="transfer-success-modal">
+            <a href="/" class="home-icon"><i class="bx bx-home"></i></a>
+            <div class="success-tick"></div>
+            <div class="success-text">Chuyển tiền thành công</div>
+            <div class="amount">400,000 VND</div>
+            <div class="double-down-icon">
+              <i class="bx bx-chevrons-down"></i>
+            </div>
+            <div class="receiver-info">
+              <div class="receiver-name">NGUYEN NGOC QUY</div>
+              <div class="receiver-account">PTIT BANK - 011438886</div>
+            </div>
+            <a href="/account/transfer-money" class="do-another-transfer"
+              >Thực hiện giao dịch khác</a
+            >
+          </div>
+        </div>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+    <script>
+      const confirmTransactionBtn = document.querySelector(
+        ".confirm-transaction-btn"
+      );
+      const confirmModal = document.querySelector(".confirm-modal-wrapper");
+      const closeModalBtn = document.querySelector(".modal-close-btn");
+
+      const confirmCodeBtn = document.querySelector(".confirm-code-btn");
+      const transferSuccessModal = document.querySelector(
+        ".transfer-success-modal-wrapper"
+      );
+
+      confirmCodeBtn.addEventListener("click", () => {
+        transferSuccessModal.style.display = "flex";
+      });
+
+      confirmTransactionBtn.addEventListener("click", () => {
+        confirmModal.style.display = "flex";
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        confirmModal.style.display = "none";
+      });
+
+      const myInfoConfirm = document.querySelector(".my-info-confirm");
+      const receiverInfoWrapper = document.querySelector(
+        ".receiver-info-wrapper"
+      );
+      const receiverInfoConfirm = document.querySelector(
+        ".receiver-info-confirm"
+      );
+      const confirmInformationWrapper = document.querySelector(
+        ".confirm-information-wrapper"
+      );
+
+      myInfoConfirm.addEventListener("click", () => {
+        receiverInfoWrapper.style.display = "block";
+        myInfoConfirm.style.cursor = "not-allowed";
+      });
+
+      receiverInfoConfirm.addEventListener("click", () => {
+        confirmInformationWrapper.style.display = "block";
+        receiverInfoConfirm.style.cursor = "not-allowed";
+      });
+
+      const receiveAccountNumberInput = document.querySelector(
+        ".receive-account-number"
+      );
+      const receiverAccountName = document.querySelector(
+        ".receive-account-name"
+      );
+
+      receiveAccountNumberInput.addEventListener("blur", () => {
+        const receiveAccountNumber = receiveAccountNumberInput.value.trim();
+        if (!receiveAccountNumber) return;
+
+        fetch(
+          `/api/get-account-by-account-number?account_number=${receiveAccountNumber}`
+        )
+          .then((response) => {
+            if (!response.ok)
+              throw new Error("Failed to fetch account details.");
+            return response.json();
+          })
+          .then((data) => {
+            if (data.customer) {
+              receiverAccountName.textContent = `${data.customer.FirstName} ${data.customer.LastName}`;
+              receiveAccountNumberInput.style.color = "black";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching account:", error);
+            receiverAccountName.textContent =
+              "Tài khoản không tồn tại hoặc có lỗi!";
+            receiveAccountNumberInput.style.color = "red";
+          });
+      });
+    </script>
+  </body>
+</html>

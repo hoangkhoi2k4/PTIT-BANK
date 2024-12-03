@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tạo tài khoản</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+    <link rel="stylesheet" href="../static/css/register.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style></style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <form action="/register/create-account" method="post">
+        <h2>Tạo tài khoản</h2>
+        <input type="hidden" name="CustomerID" value="{{ customer_id }}" />
+        <div class="input-field">
+          <input type="text" id="username" name="Username" required />
+          <label>Username</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" name="Password" required />
+          <label>Mật khẩu</label>
+          <span class="eye-icon show-password">
+            <i class="fa-solid fa-eye"></i>
+          </span>
+          <span class="eye-icon hide-password">
+            <i class="fa-solid fa-eye-slash"></i>
+          </span>
+        </div>
+        <div class="password-request">
+          <p class="password-request-title">Mật khẩu cần có:</p>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-1"></i>
+            <p>Từ 8 ký tự trở lên</p>
+          </div>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-2"></i>
+            <p>Có ít nhất 1 chữ cái viết hoa</p>
+          </div>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-3"></i>
+            <p>Có ít nhất 1 chữ cái viết thường</p>
+          </div>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-4"></i>
+            <p>Có ít nhất 1 chữ số</p>
+          </div>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-5"></i>
+            <p>Có ít nhất 1 ký tự đặc biệt</p>
+          </div>
+          <div class="password-request-item">
+            <i class="fa-solid fa-circle-check request-6"></i>
+            <p>Không chứa khoảng trắng</p>
+          </div>
+        </div>
+        <p class="error-message" id="errorMessage">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %}
+          <span class="{{ category }}">{{ message }}</span>
+          {% endfor %} {% endif %} {% endwith %}
+        </p>
+        <button class="login-btn" type="submit">Đăng ký</button>
+        <div class="register">
+          <p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const passwordField = document.getElementById("password");
+      const showIcon = document.querySelector(".show-password");
+      const hideIcon = document.querySelector(".hide-password");
+
+      const conditions = [
+        { regex: /.{8,}/, element: document.querySelector(".request-1") }, // Từ 8 ký tự trở lên
+        { regex: /[A-Z]/, element: document.querySelector(".request-2") }, // Ít nhất 1 chữ cái viết hoa
+        { regex: /[a-z]/, element: document.querySelector(".request-3") }, // Ít nhất 1 chữ cái viết thường
+        { regex: /\d/, element: document.querySelector(".request-4") }, // Ít nhất 1 chữ số
+        {
+          regex: /[!@#$%^&*(),.?":{}|<>]/,
+          element: document.querySelector(".request-5"),
+        }, // Ít nhất 1 ký tự đặc biệt
+        { regex: /^\S+$/, element: document.querySelector(".request-6") }, // Không chứa khoảng trắng
+      ];
+
+      // Hàm kiểm tra và cập nhật màu sắc
+      function checkPasswordConditions(password) {
+        conditions.forEach((condition) => {
+          if (condition.regex.test(password)) {
+            condition.element.style.color = "#00ff00"; // Điều kiện thỏa mãn
+          } else {
+            condition.element.style.color = ""; // Trở về mặc định
+          }
+        });
+      }
+
+      passwordField.oninput = function () {
+        if (passwordField.value !== "") showIcon.style.display = "inline";
+        else showIcon.style.display = "none";
+        checkPasswordConditions(passwordField.value);
+      };
+
+      hideIcon.style.display = "none";
+
+      showIcon.onclick = function () {
+        passwordField.type = "text";
+        showIcon.style.display = "none";
+        hideIcon.style.display = "inline";
+      };
+
+      hideIcon.onclick = function () {
+        passwordField.type = "password";
+        showIcon.style.display = "inline";
+        hideIcon.style.display = "none";
+      };
+    </script>
+  </body>
+</html>

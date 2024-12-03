@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="../static/css/change_email.css" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>Thiết lập mã pin</title>
+    <style>
+      .error-message .danger {
+        color: red;
+      }
+
+      .error-message .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/transfer-money">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Thiết lập mã pin</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Thiết lập mã pin</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <form action="/account/choose-pin-code" method="post">
+          <div class="transaction-query">
+            <div class="title">Thiết lập mã pin</div>
+            <div class="account-number-wrapper">
+              <div class="account-number-text">Mã pin</div>
+              <div class="account-number-detail">
+                <input type="text" name="pin_code" />
+              </div>
+            </div>
+            <p class="error-message" id="errorMessage">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %} {% for category, message in messages %}
+              <span class="{{ category }}">{{ message }}</span>
+              {% endfor %} {% endif %} {% endwith %}
+            </p>
+            <button type="submit" class="my-info-confirm confirm-update-btn">
+              Xác nhận
+            </button>
+          </div>
+        </form>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+  </body>
+</html>

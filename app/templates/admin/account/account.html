@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/9703596.png')}}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='images/9703596.png')}}"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <title>Admin</title>
+    <style>
+      tr td p {
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/admin" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li class="side-menu-li">
+          <a href="/admin">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li class="side-menu-li">
+          <a href="/admin/user">
+            <i class="bx bxs-user"></i>
+            <span class="text">Quản lý người dùng</span>
+            <!-- <i class='bx bx-chevron-right'></i> -->
+          </a>
+        </li>
+        <li class="active side-menu-li">
+          <a href="/admin/account">
+            <i class="bx bxs-user-account"></i>
+            <span class="text">Quản lý tài khoản</span>
+            <!-- <i class='bx bx-chevron-right'></i> -->
+          </a>
+        </li>
+        <li class="side-menu-li">
+          <a href="/admin/transaction">
+            <i class="bx bx-bar-chart-alt"></i>
+            <span class="text">Quản lý giao dịch</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="side-menu">
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text logout-text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <form action="#">
+          <div class="form-input">
+            <input type="search" placeholder="Tìm kiếm..." />
+            <button type="submit" class="search-btn">
+              <i class="bx bx-search"></i>
+            </button>
+          </div>
+        </form>
+        <input type="checkbox" id="switch-mode" hidden />
+        <label for="switch-mode" class="switch-mode"></label>
+        <a href="#" class="notification">
+          <i class="bx bxs-bell"></i>
+          <span class="num">8</span>
+        </a>
+        <a href="#" class="profile">
+          <img src="{{url_for('static', filename='images/')}}9703596.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Quản lý tài khoản</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Quản lý tài khoản</a>
+              </li>
+              <li><i class="bx bx-chevron-right"></i></li>
+              <li>
+                <a class="active" href="#">Danh sách tài khoản</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-data">
+          <div class="order">
+            <div class="head">
+              <h3>Danh sách tài khoản</h3>
+              <i class="bx bx-search"></i>
+              <i class="bx bx-filter"></i>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tên đăng nhập</th>
+                  <th>Số tài khoản</th>
+                  <th>Trạng thái</th>
+                  <th>Loại tài khoản</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for account in accounts %}
+                <tr>
+                  <td>{{ account.Username}}</td>
+                  <td>{{ account.accountNumber}}</td>
+                  <td>
+                    <span
+                      class="status {{'success' if account.Status.lower() == 'active' else 'error'}}"
+                      >{{'Đang hoạt động' if account.Status.lower() == 'active'
+                      else 'Đang bị khóa'}}</span
+                    >
+                  </td>
+                  <td>{{ account.AccountType }}</td>
+                  <td>
+                    <a href="/admin/account/edit/{{ account.AccountID }}"
+                      ><span class="text-nomal"
+                        ><i class="bx bx-pencil"></i>Sửa</span
+                      ></a
+                    >
+                    | {% if account.Status.lower() == 'active' %}
+                    <a
+                      href="#"
+                      onclick="confirmLockAccount(event, '{{ account.AccountID}}')"
+                    >
+                      <span class="text-danger">
+                        <i class="bx bxs-lock"></i>Khóa
+                      </span>
+                    </a>
+                    {% else %}
+                    <a href="/admin/account/unlock/{{ account.AccountID}}">
+                      <span class="text-blue">
+                        <i class="bx bxs-lock-open"></i>Bỏ khóa
+                      </span>
+                    </a>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <button>
+                      <a href="/admin/recharge/{{ account.AccountID }}">
+                        <span>
+                          <svg
+                            height="20"
+                            width="20"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                              d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
+                              fill="currentColor"
+                            ></path>
+                          </svg>
+                          Nạp tiền
+                        </span>
+                      </a>
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <!-- After accounts table -->
+            <div class="container-pagination">
+              <div class="pagination">
+                {% if pagination.has_prev %}
+                <a
+                  class="pagi"
+                  href="{{ url_for('admin.account_list', page=pagination.prev_num) }}"
+                  style="margin-left: 10px"
+                  >Previous</a
+                >
+                {% endif %} {% for page_num in pagination.iter_pages() %} {% if
+                page_num %} {% if page_num == pagination.page %}
+                <strong style="margin-left: 10px">{{ page_num }}</strong>
+                {% else %}
+                <a
+                  href="{{ url_for('admin.account_list', page=page_num) }}"
+                  style="margin-left: 10px"
+                  >{{ page_num }}</a
+                >
+                {% endif %} {% else %}
+                <span>...</span>
+                {% endif %} {% endfor %} {% if pagination.has_next %}
+                <a
+                  class="pagi"
+                  href="{{ url_for('admin.account_list', page=pagination.next_num) }}"
+                  style="margin-left: 10px"
+                  >Next</a
+                >
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="{{url_for('static', filename='js/')}}script.js"></script>
+  </body>
+</html>

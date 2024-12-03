@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="../static/css/register.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <form action="/register" method="post">
+        <h2>Đăng ký</h2>
+        <div style="display: flex; justify-content: space-between">
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="FirstName" required />
+            <label>Họ</label>
+          </div>
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="LastName" required />
+            <label>Tên</label>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="DateOfBirth" required />
+            <label>Ngày sinh</label>
+          </div>
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="PhoneNumber" required />
+            <label>Số điện thoại</label>
+          </div>
+        </div>
+        <div class="input-field">
+          <input type="email" name="Email" required />
+          <label>Email</label>
+        </div>
+        <div class="input-field">
+          <input type="text" name="Address" required />
+          <label>Địa chỉ</label>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="City" required />
+            <label>Thành phố</label>
+          </div>
+          <div class="input-field" style="width: 45%">
+            <input type="text" name="Country" required />
+            <label>Quốc gia</label>
+          </div>
+        </div>
+        <div class="input-field">
+          <input type="text" name="Notes" />
+          <label>Ghi chú</label>
+        </div>
+        <p class="error-message" id="errorMessage">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %}
+          <span class="{{ category }}">{{ message }}</span>
+          {% endfor %} {% endif %} {% endwith %}
+        </p>
+        <button class="continue-btn" type="submit">Continue</button>
+        <div class="register">
+          <p>Bạn đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const continueBtn = document.querySelector(".continue-btn");
+      const errorMessage = document.getElementById("errorMessage");
+    </script>
+  </body>
+</html>

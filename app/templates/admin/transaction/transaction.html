@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static', filename='images/9703596.png')}}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='images/9703596.png')}}"
+      type="image/x-icon"
+    />
+
+    <title>Admin</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/admin" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li class="side-menu-li">
+          <a href="/admin">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li class="side-menu-li">
+          <a href="/admin/user">
+            <i class="bx bxs-user"></i>
+            <span class="text">Quản lý người dùng</span>
+            <!-- <i class='bx bx-chevron-right'></i> -->
+          </a>
+        </li>
+        <li class="side-menu-li">
+          <a href="/admin/account">
+            <i class="bx bxs-user-account"></i>
+            <span class="text">Quản lý tài khoản</span>
+            <!-- <i class='bx bx-chevron-right'></i> -->
+          </a>
+        </li>
+        <li class="active side-menu-li">
+          <a href="/admin/transaction">
+            <i class="bx bx-bar-chart-alt"></i>
+            <span class="text">Quản lý giao dịch</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="side-menu">
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text logout-text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <form action="#">
+          <div class="form-input">
+            <input type="search" placeholder="Tìm kiếm..." />
+            <button type="submit" class="search-btn">
+              <i class="bx bx-search"></i>
+            </button>
+          </div>
+        </form>
+        <input type="checkbox" id="switch-mode" hidden />
+        <label for="switch-mode" class="switch-mode"></label>
+        <a href="#" class="notification">
+          <i class="bx bxs-bell"></i>
+          <span class="num">8</span>
+        </a>
+        <a href="#" class="profile">
+          <img src="{{url_for('static', filename='images/9703596.png')}}" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Quản lý giao dịch</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Quản lý giao dịch</a>
+              </li>
+              <li><i class="bx bx-chevron-right"></i></li>
+              <li>
+                <a class="active" href="#">Danh sách giao dịch</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="table-data">
+          <div class="order">
+            <div class="head">
+              <h3>Danh sách giao dịch</h3>
+              <i class="bx bx-search"></i>
+              <i class="bx bx-filter"></i>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Số tài khoản gửi</th>
+                  <th>Số tài khoản nhận</th>
+                  <th>Trạng thái</th>
+                  <th>Số tiền gửi</th>
+                  <th>Ngày giao dịch</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                  <!-- <td>
+                    <p>#1234</p>
+                  </td> -->
+                  <td>{{ transaction.senderAccountNumber }}</td>
+                  <td>{{ transaction.recipientAccountNumber }}</td>
+                  <td><span class="status success">Thành công</span></td>
+                  <td>{{ '{:,.0f}'.format(transaction.Amount) }}</td>
+                  <td>
+                    <span>{{ transaction.TransactionDate}}</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="container-pagination">
+              <div class="pagination">
+                {% if pagination.has_prev %}
+                <a
+                  class="pagi"
+                  href="{{ url_for('admin.transaction_list', page=pagination.prev_num) }}"
+                  style="margin-left: 10px"
+                  >Previous</a
+                >
+                {% endif %} {% for page_num in pagination.iter_pages() %} {% if
+                page_num %} {% if page_num == pagination.page %}
+                <strong style="margin-left: 10px">{{ page_num }}</strong>
+                {% else %}
+                <a
+                  href="{{ url_for('admin.transaction_list', page=page_num) }}"
+                  style="margin-left: 10px"
+                  >{{ page_num }}</a
+                >
+                {% endif %} {% else %}
+                <span>...</span>
+                {% endif %} {% endfor %} {% if pagination.has_next %}
+                <a
+                  class="pagi"
+                  href="{{ url_for('admin.transaction_list', page=pagination.next_num) }}"
+                  style="margin-left: 10px"
+                  >Next</a
+                >
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+  </body>
+</html>

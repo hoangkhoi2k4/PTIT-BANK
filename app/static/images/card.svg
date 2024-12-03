@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="51" viewBox="0 0 50 51">
+    <defs>
+        <linearGradient id="tkbe49awka" x1="100%" x2="0%" y1="30.469%" y2="69.531%">
+            <stop offset="0%" stop-color="#FFD14E"/>
+            <stop offset="100%" stop-color="#F16B25"/>
+        </linearGradient>
+        <linearGradient id="30w6dmp5kb" x1="100%" x2=".992%" y1="30.469%" y2="69.144%">
+            <stop offset="0%" stop-color="#3765FF"/>
+            <stop offset="30.181%" stop-color="#3561FD"/>
+            <stop offset="100%" stop-color="#0F1ADB"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g transform="translate(-864 -314) translate(848 300.5) translate(16 14.25) translate(2 2)">
+                        <circle cx="23" cy="23" r="22.5" fill="#E8F1FC"/>
+                        <g>
+                            <path fill="url(#tkbe49awka)" d="M1.5 0h33c.828 0 1.5.672 1.5 1.5V21c0 .828-.672 1.5-1.5 1.5h-33C.672 22.5 0 21.828 0 21V1.5C0 .672.672 0 1.5 0z" transform="translate(.5 8)"/>
+                            <path fill="#FFF" opacity=".4" style="mix-blend-mode:overlay" d="M0 4.5H36V10.5H0z" transform="translate(.5 8)"/>
+                        </g>
+                        <g>
+                            <path fill="url(#30w6dmp5kb)" d="M1.5 0h33c.828 0 1.5.672 1.5 1.5V21c0 .828-.672 1.5-1.5 1.5h-33C.672 22.5 0 21.828 0 21V1.5C0 .672.672 0 1.5 0z" transform="translate(9.5 15.5)"/>
+                            <path fill="#FFF" d="M12 16.5c.414 0 .75.336.75.75V18c0 .414-.336.75-.75.75H4.5c-.414 0-.75-.336-.75-.75v-.75c0-.414.336-.75.75-.75H12zm8.25 0c.414 0 .75.336.75.75V18c0 .414-.336.75-.75.75h-4.5c-.414 0-.75-.336-.75-.75v-.75c0-.414.336-.75.75-.75h4.5zm11.25 0c.414 0 .75.336.75.75V18c0 .414-.336.75-.75.75H24c-.414 0-.75-.336-.75-.75v-.75c0-.414.336-.75.75-.75h7.5zm0-12.75c.414 0 .75.336.75.75v5.25c0 .414-.336.75-.75.75H24c-.414 0-.75-.336-.75-.75V4.5c0-.414.336-.75.75-.75h7.5zm-17.25 0c.414 0 .75.336.75.75v.75c0 .414-.336.75-.75.75H4.5c-.414 0-.75-.336-.75-.75V4.5c0-.414.336-.75.75-.75h9.75z" opacity=".4" style="mix-blend-mode:overlay" transform="translate(9.5 15.5)"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

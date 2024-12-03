@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <form method="POST" action="{{ url_for('auth.login') }}">
+        <h2>Đăng nhập</h2>
+        <div class="input-field">
+          <input type="text" id="username" name="username" required />
+          <label>Username</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" name="password" required />
+          <label>Mật khẩu</label>
+          <span class="eye-icon show-password">
+            <i class="fa-solid fa-eye"></i>
+          </span>
+          <span class="eye-icon hide-password">
+            <i class="fa-solid fa-eye-slash"></i>
+          </span>
+        </div>
+        <p class="error-message" id="errorMessage">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %}
+          <span class="{{ category }}">{{ message }}</span>
+          {% endfor %} {% endif %} {% endwith %}
+        </p>
+        <div class="forget">
+          <a href="/login/forgot-password">Quên mật khẩu?</a>
+        </div>
+        <button class="login-btn" type="submit">Đăng nhập</button>
+        <div class="register">
+          <p>Bạn chưa có tài khoản? <a href="/register">Đăng ký</a></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popupMessage">
+      <div class="message" id="popupText"></div>
+      <button class="close-btn" id="closePopup">Đóng</button>
+    </div>
+
+    <script>
+      const passwordField = document.getElementById("password");
+      const showIcon = document.querySelector(".show-password");
+      const hideIcon = document.querySelector(".hide-password");
+
+      passwordField.oninput = function () {
+        if (passwordField.value !== "") showIcon.style.display = "inline";
+        else showIcon.style.display = "none";
+      };
+
+      hideIcon.style.display = "none";
+
+      showIcon.onclick = function () {
+        passwordField.type = "text";
+        showIcon.style.display = "none";
+        hideIcon.style.display = "inline";
+      };
+
+      hideIcon.onclick = function () {
+        passwordField.type = "password";
+        showIcon.style.display = "inline";
+        hideIcon.style.display = "none";
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const isOpenPopup = {{ is_open_popup | tojson }};
+        console.log(isOpenPopup);
+        const popupMessage = document.getElementById("popupMessage");
+        const popupText = document.getElementById("popupText");
+        const closePopup = document.getElementById("closePopup");
+
+        if (isOpenPopup) {
+          // Set message and show popup
+          popupText.textContent = "{{ message }}"; // Display the message
+          popupMessage.style.display = "flex";
+          overlay.style.display = "block";
+        }
+
+        // Close popup when the close button is clicked
+        closePopup.onclick = function () {
+          popupMessage.style.display = "none";
+          overlay.style.display = "none";
+        };
+
+        overlay.onclick = function () {
+          popupMessage.style.display = "none";
+          overlay.style.display = "none"; // Ẩn overlay khi nhấp vào overlay
+        };
+      });
+    </script>
+  </body>
+</html>

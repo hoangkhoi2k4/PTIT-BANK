@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nhập mã xác thực</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+    <link rel="stylesheet" href="../static/css/forgot_password.css" />
+    <style>
+      .error-message {
+        font-size: 14px;
+      }
+      .text-center {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .error-message .danger {
+        color: red;
+      }
+
+      .error-message .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="content" role="main" class="container">
+      <div class="card">
+        <div class="card-content">
+          <div class="text-center">
+            Vui lòng nhập mã xác thực đã được gửi tới email của bạn
+          </div>
+
+          <div class="form-container">
+            <form action="/login/verify-code" method="post">
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="verify_code"
+                  name="verify_code"
+                  required
+                />
+                <p class="error-message" id="errorMessage">
+                  {% with messages = get_flashed_messages(with_categories=true)
+                  %} {% if messages %} {% for category, message in messages %}
+                  <span class="{{ category }}">{{ message }}</span>
+                  {% endfor %} {% endif %} {% endwith %}
+                </p>
+              </div>
+              <button type="submit" class="reset-button">Xác nhận</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

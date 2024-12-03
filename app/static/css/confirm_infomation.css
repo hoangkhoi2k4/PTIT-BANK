@@ -1,0 +1,813 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+input {
+  height: 100% !important;
+  font-size: 14px !important;
+  border: none !important;
+  margin: 0 !important;
+  text-align: center !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  background: transparent;
+  width: 100%;
+  outline: none !important;
+  padding: 4px 0;
+}
+
+:root {
+  --poppins: "Poppins", sans-serif;
+  --lato: "Lato", sans-serif;
+
+  --light: #f9f9f9;
+  --blue: #3c91e6;
+  --light-blue: #cfe8ff;
+  --grey: #eee;
+  --dark-grey: #aaaaaa;
+  --dark: #342e37;
+  --red: #db504a;
+  --yellow: #ffce26;
+  --light-yellow: #fff2c6;
+  --orange: #fd7238;
+  --light-orange: #ffe0d3;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body.dark {
+  --light: #0c0c1e;
+  --grey: #060714;
+  --dark: #fbfbfb;
+}
+
+body {
+  background: var(--grey);
+  overflow-x: hidden;
+}
+
+.logo {
+  background-image: url("../images/PTITBANK.png");
+  background-size: contain;
+  width: 40px;
+  height: 40px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 20px;
+}
+
+/* SIDEBAR */
+#sidebar {
+  padding-top: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: var(--light);
+  z-index: 2000;
+  font-family: var(--lato);
+  transition: 0.3s ease;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+#sidebar::--webkit-scrollbar {
+  display: none;
+}
+
+#sidebar.hide {
+  width: 60px;
+}
+
+#sidebar .brand {
+  font-size: 24px;
+  font-weight: 700;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: rgb(237, 28, 36);
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: var(--light);
+  z-index: 500;
+  padding-bottom: 20px;
+  box-sizing: content-box;
+}
+
+#sidebar .brand .bx {
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+#sidebar .side-menu {
+  width: 100%;
+  margin-top: 48px;
+}
+
+#sidebar .side-menu li {
+  height: 48px;
+  background: transparent;
+  margin-left: 6px;
+  border-radius: 48px 0 0 48px;
+  padding: 4px;
+}
+
+#sidebar .side-menu li.active {
+  background: var(--grey);
+  position: relative;
+}
+
+#sidebar .side-menu li.active::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  top: -40px;
+  right: 0;
+  box-shadow: 20px 20px 0 var(--grey);
+  z-index: -1;
+}
+
+#sidebar .side-menu li.active::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  bottom: -40px;
+  right: 0;
+  box-shadow: 20px -20px 0 var(--grey);
+  z-index: -1;
+}
+
+#sidebar .side-menu li a {
+  width: 100%;
+  height: 100%;
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  border-radius: 48px;
+  font-size: 16px;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+#sidebar .side-menu.top li.active a {
+  color: var(--blue);
+}
+
+#sidebar.hide .side-menu li a {
+  width: calc(48px - (4px * 2));
+  transition: width 0.3s ease;
+}
+
+#sidebar .side-menu li a.logout {
+  color: var(--red);
+}
+
+#sidebar .side-menu.top li a:hover {
+  color: var(--blue);
+}
+
+#sidebar .side-menu li a .bx {
+  min-width: calc(60px - ((4px + 6px) * 2));
+  display: flex;
+  justify-content: center;
+}
+
+#content {
+  position: relative;
+  width: calc(100% - 280px);
+  left: 280px;
+  transition: 0.3s ease;
+}
+
+#sidebar.hide ~ #content {
+  width: calc(100% - 60px);
+  left: 60px;
+}
+
+#content nav {
+  height: 56px;
+  background: var(--light);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  grid-gap: 24px;
+  font-family: var(--lato);
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+#content nav::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  bottom: -40px;
+  left: 0;
+  border-radius: 50%;
+  box-shadow: -20px -20px 0 var(--light);
+}
+
+#content nav a {
+  color: var(--dark);
+}
+
+#content nav .bx.bx-menu {
+  cursor: pointer;
+  color: var(--dark);
+}
+
+#content nav .nav-link {
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+#content nav .nav-link:hover {
+  color: var(--blue);
+}
+
+#content nav form {
+  max-width: 400px;
+  width: 100%;
+  margin-right: auto;
+}
+
+#content nav .profile {
+  display: block;
+  margin-left: auto;
+}
+
+#content nav .profile img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* NAVBAR */
+
+/* MAIN */
+#content main {
+  width: 100%;
+  padding: 36px 24px;
+  font-family: var(--poppins);
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+
+#content main .head-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  grid-gap: 16px;
+  flex-wrap: wrap;
+}
+
+#content main .head-title .left h1 {
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+
+#content main .head-title .left .breadcrumb {
+  display: flex;
+  align-items: center;
+  grid-gap: 16px;
+}
+
+#content main .head-title .left .breadcrumb li {
+  color: var(--dark);
+}
+
+#content main .head-title .left .breadcrumb li a {
+  color: var(--dark-grey);
+  pointer-events: none;
+}
+
+#content main .head-title .left .breadcrumb li a.active {
+  color: var(--blue);
+  pointer-events: unset;
+}
+
+#content main .head-title .btn-download {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 36px;
+  background: var(--blue);
+  color: var(--light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 10px;
+  font-weight: 500;
+}
+
+#content main .box-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 24px;
+  margin-top: 36px;
+}
+
+.main-account-title,
+.transaction-query {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.main-account .left-content {
+  background-image: url("../images/PTITBANK.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+#content main .box-info li,
+.transaction-query {
+  box-shadow: 0 0 1rem #0003;
+  border-radius: 20px;
+  padding: 24px;
+  background: var(--light);
+}
+
+#content main .box-info li .my-account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 24px;
+}
+
+.current-info {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  column-gap: 20px;
+  justify-content: center;
+}
+
+.current-info-item {
+  display: flex;
+  width: 45%;
+  border-radius: 6px;
+  border: solid 1px #cccccc;
+  padding: 14px 16px;
+  align-items: center;
+}
+
+.current-info-item .left-content {
+  margin-right: 5px;
+  height: 51px;
+  width: 50px;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.current-info-item .right-content .up-content,
+.card .right-content {
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.67;
+  letter-spacing: 0.43px;
+  color: #646464;
+}
+
+.current-info-item .right-content .down-content {
+  display: flex;
+  align-items: center;
+}
+
+.current-info-item .right-content .down-content .balance {
+  font-size: 20px;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.35px;
+  color: #141ed2;
+}
+
+.current-info-item .right-content .down-content .currency {
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.67;
+  letter-spacing: 0.43px;
+  color: #646464;
+  margin-left: 5px;
+}
+
+.total-value .left-content {
+  background-image: url("../images/total.svg");
+}
+
+.total-value .up-content {
+  display: flex;
+  align-items: center;
+}
+
+.eye {
+  margin-left: 5px;
+  font-size: 15px;
+  display: none;
+  cursor: pointer;
+}
+
+.eye.active {
+  display: block;
+}
+
+.card .left-content {
+  background-image: url("../images/card.svg");
+}
+
+.saving .left-content {
+  background-image: url("../images/saving.svg");
+}
+
+.loan .left-content {
+  background-image: url("../images/loan.svg");
+}
+
+#content main .box-info li .my-account .bx {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#content main .box-info li:nth-child(1) .my-account .bx {
+  background: var(--light-blue);
+  color: var(--blue);
+}
+
+#content main .box-info li:nth-child(2) .bx {
+  background: var(--light-yellow);
+  color: var(--yellow);
+}
+
+#content main .box-info li:nth-child(3) .bx {
+  background: var(--light-orange);
+  color: var(--orange);
+}
+
+#content main .box-info li .text h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+#content main .box-info li .text p {
+  color: var(--dark);
+}
+
+.my-info {
+  margin-bottom: 50px;
+}
+
+.my-info-title {
+  color: #141ed2;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.my-info .detail-wrapper,
+.transfer-success-modal .receiver-info {
+  border: 1px solid #c4c4c4;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-left: 14px;
+  position: relative;
+}
+
+.detail-title {
+  color: #000;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.method-wrapper {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  /* margin-top: 10px; */
+}
+
+.method-text {
+  font-size: 1rem;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: 0.5px;
+  color: #646464;
+  width: 500px;
+}
+
+.method-detail {
+  width: 300px;
+  height: calc(1.5em + 0.75rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  border: solid 1px #c4c4c4;
+  background-color: #f7f7f7;
+  padding: 0.375rem 0.75rem;
+  height: fit-content;
+  display: flex;
+}
+
+.method-detail.my-account-info {
+  display: block;
+}
+
+.method-detail input {
+  text-align: left !important;
+}
+
+.method-detail.confirm-code-input input {
+  text-align: center !important;
+}
+
+.my-info-confirm,
+.choose-now,
+.receiver-info-confirm,
+.confirm-transaction-btn,
+.do-another-transfer {
+  margin-top: 20px;
+  background-color: #141ed2;
+  border: solid 1px #141ed2;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: 295px;
+}
+
+.method-detail .logo {
+  background-image: url("../images/PTITBANK.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.my-info-confirm:hover,
+.choose-now:hover,
+.do-another-transfer:hover,
+.receiver-info-confirm:hover,
+.confirm-transaction-btn:hover {
+  background-color: #fff;
+  color: #141ed2;
+}
+
+.confirm-modal-wrapper,
+.confirm-choose-modal,
+.transfer-success-modal-wrapper {
+  background-color: rgba(0, 0, 0, 0.32);
+  width: 100%;
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.confirm-modal,
+.transfer-success-modal {
+  display: block;
+  padding: 24px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  overflow: auto;
+  outline: 0;
+  min-height: inherit;
+  max-height: inherit;
+  background-color: #fff;
+  width: 600px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.36;
+  letter-spacing: 0.25px;
+  color: #000;
+}
+
+.modal-close-btn {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.confirm-code-input {
+  width: 100%;
+}
+
+.confirm-code-btn {
+  width: 100%;
+}
+
+.transfer-success-modal .home-icon {
+  background-color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  float: right;
+}
+
+.transfer-success-modal .success-tick {
+  background-image: url("../images/success-check.png");
+  width: 100px;
+  height: 100px;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.transfer-success-modal .success-text,
+.transfer-success-modal .receiver-name {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.transfer-success-modal .amount {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #141ed2;
+}
+
+.transfer-success-modal .double-down-icon {
+  font-size: 24px;
+  text-align: center;
+  color: #141ed2;
+}
+
+.transfer-success-modal {
+  width: fit-content;
+  overflow: hidden;
+}
+
+.receiver-account {
+  font-size: 14px;
+  text-align: center;
+  color: var(--dark);
+}
+
+.do-another-transfer {
+  width: 100%;
+  margin-left: 8px;
+  display: block;
+}
+
+.confirm-choose-modal {
+  font-family: "Poppins", sans-serif;
+}
+
+.confirm-choose-modal .modal-body {
+  display: flex;
+}
+
+.confirm-choose-modal .modal-title {
+  font-size: 20px;
+}
+
+.confirm-choose-modal .choose-now,
+.confirm-choose-modal {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.confirm-choose-modal .choose-now {
+  width: 100%;
+}
+
+.receive-account-name {
+  min-height: 38.4px;
+}
+
+.receiver-info-confirm {
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 500px;
+}
+
+.confirm-information-wrapper {
+  display: block !important;
+}
+
+.confirm-transaction-btn {
+  padding: 10px;
+  margin-left: 500px;
+}
+
+.logout {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  color: red;
+}
+
+/* MAIN */
+/* CONTENT */
+
+@media screen and (max-width: 768px) {
+  #sidebar {
+    width: 200px;
+  }
+
+  #content {
+    width: calc(100% - 60px);
+    left: 200px;
+  }
+
+  #content nav .nav-link {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #content nav form.show ~ .profile {
+    display: none;
+  }
+
+  #content main .box-info {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="../static/css/home.css" />
+    <title>Trang chủ</title>
+  </head>
+  <body>
+    <div
+      style="display: {% if not account.accountNumber %}flex{% else %}none{% endif %};"
+      class="confirm-modal-wrapper"
+    >
+      <div class="confirm-modal">
+        <div class="modal-header">
+          <div class="modal-title">
+            Vui lòng chọn số tài khoản cho tài khoản của bạn!
+          </div>
+        </div>
+        <div class="modal-body">
+          <a
+            href="/account/choose-account-number"
+            class="my-info-confirm confirm-code-btn"
+            >Chọn ngay</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li class="active">
+          <a href="#">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/transfer-money">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Trang chủ</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Trang chủ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <div class="my-account">
+              <i class="bx bx-user-circle"></i>
+              <span class="text">
+                <h3>Tài khoản của tôi</h3>
+              </span>
+            </div>
+            <div class="current-info">
+              <div class="current-info-item total-value">
+                <div class="left-content"></div>
+                <div class="right-content">
+                  <div class="up-content">Số dư tài khoản(1)</div>
+                  <div class="down-content">
+                    <div class="balance">
+                      {{'{:,.0f}'.format(account.Balance)}}
+                    </div>
+                    <div class="currency">VND</div>
+                  </div>
+                </div>
+              </div>
+              <div class="current-info-item card">
+                <div class="left-content"></div>
+                <div class="right-content">Thẻ(0)</div>
+              </div>
+              <div class="current-info-item saving">
+                <div class="left-content"></div>
+                <div class="right-content">
+                  <div class="up-content">Tài khoản tiền gửi</div>
+                  <div class="down-content">
+                    <div class="balance">0</div>
+                    <div class="currency">VND</div>
+                  </div>
+                </div>
+              </div>
+              <div class="current-info-item loan">
+                <div class="left-content"></div>
+                <div class="right-content">
+                  <div class="up-content">Khoản vay</div>
+                  <div class="down-content">
+                    <div class="balance">0</div>
+                    <div class="currency">VND</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="recent-activities">
+          <div class="recent-transactions-list">
+            <div class="title">Danh sách giao dịch bạn thực hiện gần đây</div>
+            {% if not transactions %}
+            <h3
+              style="text-align: center; margin-top: 80px; margin-bottom: 80px"
+            >
+              Bạn chưa thực hiện giao dịch nào!
+            </h3>
+            {% endif %} {% for transaction, sender_username, recipient_name,
+            recipient_account_number in transactions %}
+            <div class="detail-transaction">
+              <div class="logo-bank"></div>
+              <div class="receiver">
+                <div class="fullname">{{ recipient_name }}</div>
+                <div class="account-number">{{ recipient_account_number }}</div>
+              </div>
+              <span class="detail-transaction-icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="recent-credit-scores">
+            <div class="title">Danh sách điểm thưởng gần đây</div>
+            {% if not transactions %}
+            <h3
+              style="text-align: center; margin-top: 80px; margin-bottom: 80px"
+            >
+              Bạn chưa có điểm thưởng!
+            </h3>
+            {% endif %} {% for transaction, sender_username, recipient_name,
+            recipient_account_number in transactions %}
+            <div class="detail-score">
+              <div class="left-content">
+                <i class="bx bxs-dollar-circle"></i>
+              </div>
+              <div class="right-content">
+                <div class="score">+100 PCoin</div>
+                <div class="description">
+                  Giao dịch bằng ngân hàng PTIT BANK
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+    <script>
+      const modalCloseBtn = document.querySelector(".close-modal-btn");
+      const confirmModal = document.querySelector(".confirm-modal-wrapper");
+      const closeModalBtn = document.querySelector(".modal-close-btn");
+
+      const confirmCodeBtn = document.querySelector(".confirm-code-btn");
+
+      modalCloseBtn.addEventListener("click", () => {
+        confirmModal.style.display = "none";
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        confirmModal.style.display = "none";
+      });
+    </script>
+  </body>
+</html>

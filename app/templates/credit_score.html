@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="../static/css/credit_score.css" />
+
+    <title>Đổi điểm thưởng</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/transfer-money">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Đổi điểm thưởng</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Đổi điểm thưởng</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <div class="my-account">
+              <i class="bx bx-transfer"></i>
+              <span class="text">
+                <h3>Quy chế đổi điểm thưởng</h3>
+              </span>
+            </div>
+            <div class="rule">
+              <div class="pcoin"><i class="bx bxs-dollar-circle"></i></div>
+              <div>
+                <span>10000 <span style="color: red">PCoin</span></span>
+                <i class="bx bx-transfer"></i>
+                <span class="drl"
+                  ><span style="color: red">10</span> Điểm rèn luyện</span
+                >
+              </div>
+            </div>
+            <div class="my-coin">
+              <div class="text">
+                Tổng số coin bạn đang có:
+                <span class="total-coin"
+                  >{{account.creditScored}} <i class="bx bxs-dollar-circle"></i
+                ></span>
+              </div>
+            </div>
+            <div
+              class="convert"
+              data-credit-scored="{{ account.creditScored }}"
+            >
+              Đổi hết coin thành ĐRL
+            </div>
+            <div
+              style="color: red; margin-top: 10px"
+              class="convert-error"
+            ></div>
+            <div class="confirm-convert-modal-wrapper">
+              <div class="confirm-convert-modal">
+                <div class="modal-header">
+                  <div class="modal-title">Đổi điểm thưởng</div>
+                  <div class="modal-close-btn"><i class="bx bx-x"></i></div>
+                </div>
+                <div class="modal-body">
+                  <div class="modal-content">
+                    <p>Bạn có chắc chắn muốn đổi</p>
+                    <div style="margin: 0 5px !important" class="pcoin">
+                      <i class="bx bxs-dollar-circle"></i>
+                    </div>
+                    <span
+                      >{{account.creditScored // 10000 * 10000}}
+                      <span style="color: red">PCoin</span> thành</span
+                    >
+                    <span style="margin-left: 5px" class="drl"
+                      ><span style="color: red"
+                        >{{account.creditScored // 10000 * 10}}</span
+                      >
+                      điểm rèn luyện?</span
+                    >
+                  </div>
+                  <form action="/account/convert-credit-score" method="post">
+                    <input
+                      type="hidden"
+                      name="amount"
+                      value="{{ account.creditScored // 10000 * 10000 }}"
+                    />
+                    <button
+                      type="submit"
+                      class="my-info-confirm confirm-code-btn"
+                    >
+                      Xác nhận
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+    <script>
+      const convertBtn = document.querySelector(".convert");
+      const convertError = document.querySelector(".convert-error");
+      const creditScored = parseInt(convertBtn.dataset.creditScored, 10);
+      const totalCoinSpan = document.querySelector(".total-coin");
+      const confirmModal = document.querySelector(
+        ".confirm-convert-modal-wrapper"
+      );
+      const closeModalBtn = document.querySelector(".modal-close-btn");
+
+      const confirmCodeBtn = document.querySelector(".confirm-code-btn");
+
+      convertBtn.addEventListener("click", () => {
+        if (creditScored < 10000) {
+          convertError.textContent =
+            "Bạn cần có ít nhất 10000 PCoin để đổi điểm thưởng";
+        } else {
+          convertError.textContent = "";
+          confirmModal.style.display = "flex";
+        }
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        confirmModal.style.display = "none";
+      });
+
+      confirmCodeBtn.addEventListener("click", () => {
+        const currentScore = parseInt(totalCoinSpan.textContent, 10);
+        const amountToDeduct = Math.floor(currentScore / 10000) * 10000;
+        const newScore = currentScore - amountToDeduct;
+        confirmModal.style.display = "none";
+
+        let currentDisplayScore = currentScore;
+        const interval = setInterval(() => {
+          if (currentDisplayScore <= newScore) {
+            clearInterval(interval);
+            totalCoinSpan.textContent = `${newScore} `;
+            // Ẩn modal sau khi giảm xong
+          } else {
+            currentDisplayScore -= 10000; // Giảm dần mỗi lần 100
+            totalCoinSpan.textContent = `${currentDisplayScore} `;
+          }
+        }, 50); // Thời gian giữa mỗi lần cập nhật
+      });
+    </script>
+  </body>
+</html>

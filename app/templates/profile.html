@@ -1,0 +1,217 @@
+<!DOCTYPE >
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="../static/css/profile.css" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>Thông tin tài khoản</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/transfer-money">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Thông tin tài khoản</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Thông tin tài khoản</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <div class="main-account-title">Tài khoản nguồn</div>
+            <div class="current-info">
+              <div class="current-info-item main-account">
+                <div class="left-content"></div>
+                <div class="right-content">
+                  <div class="fullname">
+                    {{customer.FirstName+" "+customer.LastName}}
+                  </div>
+                  <div class="account-number">{{account.accountNumber}}</div>
+                </div>
+              </div>
+              <div class="current-info-item total-value">
+                <div class="left-content"></div>
+                <div class="right-content">
+                  <div class="up-content">Số dư tài khoản(1)</div>
+                  <div class="down-content">
+                    <div class="balance">
+                      {{'{:,.0f}'.format(account.Balance)}}
+                    </div>
+                    <div class="currency">VND</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="transaction-query">
+          <div class="title">Truy vấn lịch sử giao dịch</div>
+          <div class="search-title">Tìm kiếm</div>
+          <div class="account-number-wrapper">
+            <div class="account-number-text">Số tài khoản</div>
+            <div class="account-number-detail">
+              {{account.accountNumber}}/{{customer.FirstName + " " +
+              customer.LastName}} (VND)
+            </div>
+          </div>
+          <div class="time-wrapper">
+            <div class="time-text">Khoảng thời gian</div>
+            <form action="{{ url_for('home.get_transaction') }}" method="post">
+              <div class="time-detail">
+                <div class="time-start">
+                  <input cla type="date" name="start_date" required />
+                </div>
+                <div class="arrow-icon"></div>
+                <div class="time-end">
+                  <input type="date" name="end_date" required />
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="query"
+                style="margin-top: 15px; margin-right: 15px"
+              >
+                Truy vấn
+              </button>
+            </form>
+          </div>
+          <div class="query-result">
+            <h3>Kết quả</h3>
+            <table class="query-result-table">
+              <tr>
+                <th>STT</th>
+                <th>Ngày giao dịch</th>
+                <th>Số tiền</th>
+                <th>Nội dung</th>
+                <th>Đối tác</th>
+              </tr>
+              {% if transactions %} {% for item in transactions.items %} {% set
+              transaction = item[0] %} {% set sender_first_name = item[1] %} {%
+              set sender_last_name = item[2] %} {% set recipient_first_name =
+              item[3] %} {% set recipient_last_name = item[4] %} {% set
+              recipient_account_number = item[5] %} {% set sender_account_number
+              = item[6] %} {% set recipient_account_number = item[7] %} {% set
+              transaction_type = item[8] %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ transaction.TransactionDate.strftime('%d/%m/%Y') }}</td>
+                <td>
+                  {% if transaction_type == 'incoming' %}
+                  <span style="color: green"
+                    >+{{ '{:,.0f}'.format(transaction.Amount) }} VNĐ</span
+                  >
+                  {% else %}
+                  <span style="color: red"
+                    >-{{ '{:,.0f}'.format(transaction.Amount) }} VNĐ</span
+                  >
+                  {% endif %}
+                </td>
+                <td>{{ transaction.Description }}</td>
+                <td>
+                  {% if transaction_type == 'incoming' %} {{ sender_first_name
+                  }} {{ sender_last_name }} - {{ sender_account_number }} {%
+                  else %} {{ recipient_first_name }} {{ recipient_last_name }} -
+                  {{ recipient_account_number }} {% endif %}
+                </td>
+              </tr>
+              {% endfor %} {% else %}
+              <tr>
+                <td colspan="5">Không có giao dịch nào</td>
+              </tr>
+              {% endif %}
+            </table>
+          </div>
+        </div>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+  </body>
+</html>

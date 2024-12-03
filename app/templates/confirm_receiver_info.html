@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/confirm_receiver_info.css') }}"
+    />
+
+    <title>Chuyển tiền</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="#">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Chuyển tiền</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Chuyển tiền</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <form
+              action="/account/transfer-money/confirm-receiver-info"
+              method="post"
+            >
+              <div class="my-info receiver-info-wrapper">
+                <div class="my-info-title">Thông tin người nhận</div>
+                <div class="detail-wrapper">
+                  <div class="detail">
+                    <div class="detail-title">Thông tin người nhận</div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Ngân hàng thụ hưởng</div>
+                      <div class="method-detail">
+                        <div class="logo"></div>
+                        <div class="text">PTIT BANK</div>
+                      </div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Số tài khoản</div>
+                      <div class="method-detail">
+                        <input
+                          name="receiver_account_number"
+                          class="receive-account-number"
+                        />
+                      </div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Tên tài khoản</div>
+                      <div class="method-detail receive-account-name"></div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Số tiền</div>
+                      <div class="method-detail">
+                        <input class="amount-input" name="amount" />
+                      </div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Nội dung</div>
+                      <div class="method-detail">
+                        <input
+                          type="text"
+                          class="transfer-content"
+                          name="transfer_content"
+                          value="{{customer.FirstName + ' ' + customer.LastName
+                        }} chuyen tien"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <p class="error-message" id="errorMessage">
+                    {% with messages =
+                    get_flashed_messages(with_categories=true) %} {% if messages
+                    %} {% for category, message in messages %}
+                    <span class="{{ category }}">{{ message }}</span>
+                    {% endfor %} {% endif %} {% endwith %}
+                  </p>
+                  <button type="submit" class="receiver-info-confirm">
+                    Tiếp tục
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+    <script>
+      const receiveAccountNumberInput = document.querySelector(
+        ".receive-account-number"
+      );
+      const receiverAccountName = document.querySelector(
+        ".receive-account-name"
+      );
+      receiveAccountNumberInput.addEventListener("blur", () => {
+        const receiveAccountNumber = receiveAccountNumberInput.value.trim();
+        if (!receiveAccountNumber) return;
+
+        fetch(
+          `/api/get-account-by-account-number?account_number=${receiveAccountNumber}`
+        )
+          .then((response) => {
+            if (!response.ok)
+              throw new Error("Failed to fetch account details.");
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.customer) {
+              receiverAccountName.textContent = `${data.customer.FirstName} ${data.customer.LastName}`;
+              receiverAccountName.style.color = "black";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching account:", error);
+            receiverAccountName.textContent = "Tài khoản không tồn tại!";
+            receiverAccountName.style.color = "red";
+          });
+      });
+
+      const amountInput = document.querySelector(".amount-input");
+
+      amountInput.addEventListener("input", () => {
+        let value = amountInput.value.replace(/[^0-9]/g, "");
+
+        const formattedValue = new Intl.NumberFormat("vi-VN").format(value);
+
+        const finalValue = formattedValue.replace(/\./g, ",");
+
+        amountInput.value = finalValue;
+      });
+    </script>
+  </body>
+</html>

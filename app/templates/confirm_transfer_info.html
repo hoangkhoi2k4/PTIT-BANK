@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/PTITBANK.png') }}"
+    />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- My CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/confirm_infomation.css') }}"
+    />
+
+    <title>Chuyển tiền</title>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+      <a href="/" class="brand">
+        <div class="logo"></div>
+        <span class="text">PTITBANK</span>
+      </a>
+      <ul class="side-menu top">
+        <li>
+          <a href="/">
+            <i class="bx bxs-dashboard"></i>
+            <span class="text">Trang chủ</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/profile">
+            <i class="bx bxs-info-circle"></i>
+            <span class="text">Thông tin tài khoản</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="#">
+            <i class="bx bx-transfer"></i>
+            <span class="text">Chuyển tiền</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/credit-score">
+            <i class="bx bxs-gift"></i>
+            <span class="text">Đổi điểm thưởng</span>
+          </a>
+        </li>
+        <li>
+          <a href="/account/settings">
+            <i class="bx bxs-cog"></i>
+            <span class="text">Cài đặt</span>
+          </a>
+        </li>
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+          <li>
+            <button type="submit" class="logout">
+              <i class="bx bxs-log-out-circle"></i>
+              <span class="text">Đăng xuất</span>
+            </button>
+          </li>
+        </form>
+      </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+      <!-- NAVBAR -->
+      <nav>
+        <i class="bx bx-menu"></i>
+        <a href="#" class="nav-link">Danh mục</a>
+        <a href="/account/profile" class="profile">
+          <img src="../static/images/avatar_user.png" />
+        </a>
+      </nav>
+      <!-- NAVBAR -->
+
+      <!-- MAIN -->
+      <main>
+        <div class="head-title">
+          <div class="left">
+            <h1>Chuyển tiền</h1>
+            <ul class="breadcrumb">
+              <li>
+                <a href="#">Chuyển tiền</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ul class="box-info">
+          <li>
+            <form
+              action="/account/transfer-money/confirm-transfer-information"
+              method="post"
+            >
+              <input
+                type="text"
+                hidden
+                name="receiver_account"
+                value="{{receiver_account.accountNumber}}"
+              />
+              <input
+                type="text"
+                hidden
+                name="receiver"
+                value="{{receiver.CustomerID}}"
+              />
+              <input type="text" hidden name="amount" value="{{amount}}" />
+              <input
+                type="text"
+                hidden
+                name="transfer_content"
+                value="{{transfer_content}}"
+              />
+              <input
+                type="text"
+                hidden
+                name="account"
+                value="{{account.accountNumber}}"
+              />
+              <input
+                type="text"
+                hidden
+                name="customer"
+                value="{{customer.CustomerID}}"
+              />
+              <div class="my-info confirm-information-wrapper">
+                <div class="my-info-title">Xác nhận thông tin</div>
+                <div class="detail-wrapper">
+                  <div class="detail">
+                    <div class="detail-title">Chi tiết chuyển khoản</div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Tài khoản nguồn</div>
+                      <div class="method-detail">
+                        {{account.accountNumber}}/{{customer.FirstName + " " +
+                        customer.LastName}}
+                      </div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Người nhận</div>
+                      <div class="method-detail">
+                        {{receiver_account.accountNumber}}/{{receiver.FirstName
+                        + " " + receiver.LastName}}
+                      </div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Số tiền chuyển</div>
+                      <div class="method-detail">{{amount}} VND</div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Phí chuyển</div>
+                      <div class="method-detail">0 VND</div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Tổng tiền</div>
+                      <div class="method-detail">{{amount}} VND</div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Nội dung</div>
+                      <div class="method-detail">{{transfer_content}}</div>
+                    </div>
+                    <div class="method-wrapper">
+                      <div class="method-text">Hình thức xác thực</div>
+                      <div class="method-detail">Digital OTP</div>
+                    </div>
+                  </div>
+                  <button type="submit" class="confirm-transaction-btn">
+                    Tiếp tục
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </main>
+      <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="../static/js/home.js"></script>
+  </body>
+</html>
