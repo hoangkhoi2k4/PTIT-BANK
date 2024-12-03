@@ -1,8 +1,8 @@
 # Requirements library
 
-Flask
-Flask-SQLAlchemy
-pytz
+- Flask
+- Flask-SQLAlchemy
+- pytz
 
 # Run project
 
